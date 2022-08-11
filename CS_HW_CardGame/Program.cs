@@ -12,6 +12,7 @@ namespace CS_HW_CardGame
         {
             Game game = new Game();
             game.CreateDeck();
+            game.ShuffleDeck();
             game.PrintDeck();
 
             Console.ReadLine();
@@ -22,7 +23,7 @@ namespace CS_HW_CardGame
     {
         string[] Suits = { "Spade", "Heart", "Diamond", "Club" };
         string[] Ranks = { "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
-        Player[] Players;
+        List<Player> Players = new List<Player>();
         Karta[] Deck;
         public Game()
         {
@@ -35,10 +36,34 @@ namespace CS_HW_CardGame
             {
                 for (int j = 0; j < Ranks.Length; j++)
                 {
-                    index = j + (i * j);
-                    Deck[index].Suit = Suits[i];
-                    Deck[index].Rank = Ranks[j];
+                    index = j + (i * Ranks.Length);
+                    Deck[index] = new Karta(Suits[i], Ranks[j]);
                 }
+            }
+        }
+
+        public void ShuffleDeck()
+        {
+            var rand = new Random();
+            int shifts = 150;
+            int randIndexOne, randIndexTwo;
+            for (int i = 0; i < shifts; i++)
+            {
+                randIndexOne = rand.Next(36);
+                randIndexTwo = rand.Next(36);
+                Karta temp = Deck[randIndexOne];
+                Deck[randIndexOne] = Deck[randIndexTwo];
+                Deck[randIndexTwo] = temp;
+            }
+        }
+
+        public void CreatePlayers(int playersNumber)
+        {
+            int cardsPerPlayer = 36 / playersNumber;
+            for (int i = 0; i < playersNumber; i++)
+            {
+                Player johnDoe = new Player(cardsPerPlayer); 
+                Players.Add
             }
         }
 
@@ -46,7 +71,7 @@ namespace CS_HW_CardGame
         {
             foreach(Karta card in Deck)
             {
-                Console.WriteLine(card.Rank);
+                Console.WriteLine($"{card.Rank} of {card.Suit}");
             }
         }
     }
